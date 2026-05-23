@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Каталог{% if selected_category %} · {{ selected_category.name }}{% endif %} — {{ site_settings.company_name }}{% endblock %}
+
+{% block content %}
+
+{# ---------- HEADER ---------- #}
+<section class="pt-40 pb-16 bg-cream-100">
+  <div class="max-w-screen-2xl mx-auto px-6 lg:px-12 text-center">
+    <div class="eyebrow mb-4 reveal">La carte</div>
+    <h1 class="section-title reveal reveal-delay-1">
+      {% if selected_category %}{{ selected_category.name }}{% else %}Каталог продукции{% endif %}
+    </h1>
+    <p class="text-ink-500 max-w-xl mx-auto mt-5 reveal reveal-delay-2">
+      {% if selected_category and selected_category.description %}
+        {{ selected_category.description }}
+      {% else %}
+        Тщательно подобранная коллекция французских десертов и выпечки ручной работы.
+      {% endif %}
+    </p>
+  </div>
+</section>
+
+{# ---------- FILTERS ---------- #}
+<section class="py-10 bg-cream-50 sticky top-0 z-30" style="top: 70px;">
+  <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
+    <div class="flex flex-wrap items-center justify-center gap-3">
+      <a href="{% url 'core:catalog' %}"
+         class="filter-chip {% if not selected_category %}active{% endif %}">
+        Всё меню
+      </a>
+      {% for cat in categories %}
+        <a href="?category={{ cat.slug }}"
+           class="filter-chip {% if selected_category.slug == cat.slug %}active{% endif %}">
+          {{ cat.name }}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# ---------- PRODUCTS GRID ---------- #}
+<section class="section bg-cream-50 pt-10">
+  <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
+
+    {% if products %}
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {% for product in products %}
+          <article class="product-card reveal reveal-delay-{{ forloop.counter0|add:1 }}">
+            <div class="img-wrap">
+              {% if product.display_image %}
+                <img src="{{ product.display_image }}" alt="{{ product.name }}" loading="lazy">
+              {% endif %}
+              {% if product.is_featured %}<span class="badge">Signature</span>{% endif %}
+            </div>
+            <div class="body">
+              <div class="cat">{{ product.category.name }}</div>
+              <h3 class="title">{{ product.name }}</h3>
+              {% if product.description %}
+                <p class="desc">{{ product.description }}</p>
+              {% endif %}
+              <div class="price-row">
+                <span class="price">{{ product.price|floatformat:0|intcomma }} {{ product.currency }}</span>
+                {% if product.weight %}<span class="weight">{{ product.weight }}</span>{% endif %}
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="text-center py-24">
+        <div class="ornament text-3xl mb-4">~</div>
+        <h2 class="font-serif text-3xl text-ink-900 mb-3">Скоро здесь появятся десерты</h2>
+        <p class="text-ink-500">В этой категории пока пусто. Загляните в другие!</p>
+        <a href="{% url 'core:catalog' %}" class="btn btn-outline mt-8">Все категории</a>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{# ---------- INFO ---------- #}
+<section class="py-16 bg-cream-100">
+  <div class="max-w-screen-2xl mx-auto px-6 lg:px-12 grid md:grid-cols-3 gap-8 text-center">
+    <div class="reveal">
+      <div class="ornament text-2xl mb-3">✦</div>
+      <h3 class="font-serif text-xl mb-2">Свежесть</h3>
+      <p class="text-ink-500 text-sm leading-relaxed">Свежая выпечка каждое утро, без замороженных полуфабрикатов.</p>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <div class="ornament text-2xl mb-3">✦</div>
+      <h3 class="font-serif text-xl mb-2">Ручная работа</h3>
+      <p class="text-ink-500 text-sm leading-relaxed">Каждый десерт собирается вручную нашими кондитерами.</p>
+    </div>
+    <div class="reveal reveal-delay-3">
+      <div class="ornament text-2xl mb-3">✦</div>
+      <h3 class="font-serif text-xl mb-2">Премиум-продукты</h3>
+      <p class="text-ink-500 text-sm leading-relaxed">Французское масло, бельгийский шоколад, мадагаскарская ваниль.</p>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

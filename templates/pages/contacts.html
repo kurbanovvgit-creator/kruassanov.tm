@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Контакты — {{ site_settings.company_name }}{% endblock %}
+
+{% block content %}
+
+<section class="pt-40 pb-16 bg-cream-100 text-center">
+  <div class="max-w-screen-2xl mx-auto px-6">
+    <div class="eyebrow mb-4 reveal">Contact</div>
+    <h1 class="section-title reveal reveal-delay-1">Свяжитесь с нами</h1>
+    <p class="text-ink-500 max-w-xl mx-auto mt-5 reveal reveal-delay-2">
+      Мы будем рады видеть вас лично или ответить на любые вопросы.
+    </p>
+  </div>
+</section>
+
+<section class="section bg-cream-50">
+  <div class="max-w-screen-2xl mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-12">
+
+    {# ---------- INFO ---------- #}
+    <div class="space-y-7 reveal">
+      <div class="bg-white rounded-2xl p-8 shadow-sm">
+        <div class="eyebrow mb-3">Адрес</div>
+        <p class="font-serif text-2xl text-ink-900 leading-snug">
+          {{ site_settings.address|default:"Туркменистан, Ашхабад" }}
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-5">
+        {% if site_settings.phone %}
+        <a href="tel:{{ site_settings.phone }}" class="bg-white rounded-2xl p-7 shadow-sm hover:shadow-lg transition block group">
+          <div class="eyebrow mb-2">Телефон</div>
+          <div class="font-serif text-xl text-ink-900 group-hover:text-gold-500 transition">{{ site_settings.phone }}</div>
+        </a>
+        {% endif %}
+        {% if site_settings.email %}
+        <a href="mailto:{{ site_settings.email }}" class="bg-white rounded-2xl p-7 shadow-sm hover:shadow-lg transition block group">
+          <div class="eyebrow mb-2">E-mail</div>
+          <div class="font-serif text-xl text-ink-900 group-hover:text-gold-500 transition break-all">{{ site_settings.email }}</div>
+        </a>
+        {% endif %}
+      </div>
+
+      {% if site_settings.working_hours %}
+      <div class="bg-white rounded-2xl p-7 shadow-sm">
+        <div class="eyebrow mb-2">Часы работы</div>
+        <p class="font-serif text-xl text-ink-900">{{ site_settings.working_hours }}</p>
+      </div>
+      {% endif %}
+
+      {% if site_settings.instagram_url %}
+      <a href="{{ site_settings.instagram_url }}" target="_blank" rel="noopener"
+         class="block bg-ink-900 text-white rounded-2xl p-8 hover:bg-gold-500 transition">
+        <div class="eyebrow text-gold-400 mb-2" style="color:rgba(255,255,255,.6);">Follow</div>
+        <div class="flex items-center justify-between">
+          <div class="font-serif text-2xl">@kruassanov.tm</div>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+          </svg>
+        </div>
+      </a>
+      {% endif %}
+    </div>
+
+    {# ---------- FORM ---------- #}
+    <div class="reveal reveal-delay-2">
+      <div class="bg-white rounded-3xl p-8 lg:p-10 shadow-md">
+        <div class="eyebrow mb-3">Напишите нам</div>
+        <h2 class="font-serif text-3xl text-ink-900 mb-6">Оставить сообщение</h2>
+
+        <form method="post" action="#" onsubmit="event.preventDefault(); alert('Спасибо! Это демо-форма.');" class="space-y-4">
+          {% csrf_token %}
+          <div class="grid sm:grid-cols-2 gap-4">
+            <input type="text" name="name" placeholder="Имя" class="input" required>
+            <input type="tel" name="phone" placeholder="Телефон" class="input">
+          </div>
+          <input type="email" name="email" placeholder="E-mail" class="input">
+          <textarea name="message" placeholder="Сообщение" class="input"></textarea>
+          <button type="submit" class="btn btn-primary w-full justify-center">
+            Отправить <span class="arrow">→</span>
+          </button>
+          <p class="text-xs text-ink-300 text-center">
+            Это демонстрационная форма — сообщения не сохраняются.
+          </p>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{# ---------- MAP ---------- #}
+<section class="py-0">
+  <div class="aspect-[16/7] w-full bg-cream-100 overflow-hidden">
+    <iframe
+      src="https://www.openstreetmap.org/export/embed.html?bbox=58.30,37.92,58.42,37.96&layer=mapnik"
+      class="w-full h-full border-0"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Карта">
+    </iframe>
+  </div>
+</section>
+
+{% endblock %}

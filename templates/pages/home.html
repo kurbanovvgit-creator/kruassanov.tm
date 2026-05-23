@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}{{ site_settings.company_name }} — {{ site_settings.tagline }}{% endblock %}
+{% block body_class %}home{% endblock %}
+{% block nav_class %}nav-on-dark{% endblock %}
+
+{% block content %}
+
+{# ---------- HERO ---------- #}
+<section class="hero">
+  <div class="hero-bg"
+       style="background-image: url('{% if site_settings.hero_image %}{{ site_settings.hero_image.url }}{% else %}{{ site_settings.hero_image_url }}{% endif %}');">
+  </div>
+
+  <div class="hero-content max-w-screen-2xl mx-auto px-6 lg:px-12 w-full">
+    <div class="max-w-3xl">
+      <div class="hero-eyebrow eyebrow mb-6">Maison de pâtisserie · since 2020</div>
+      <h1 class="hero-title mb-7">{{ site_settings.hero_title }}</h1>
+      <p class="hero-subtitle mb-10">{{ site_settings.hero_subtitle }}</p>
+      <div class="hero-cta flex flex-wrap gap-4">
+        <a href="{% url 'core:catalog' %}" class="btn btn-light">
+          {{ site_settings.hero_button_text }} <span class="arrow">→</span>
+        </a>
+        <a href="{% url 'core:about' %}" class="btn btn-outline" style="border-color:rgba(255,255,255,.5); color:#fff;">
+          О компании
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-cue">Discover</div>
+</section>
+
+{# ---------- INTRO STRIP ---------- #}
+<section class="py-20 bg-cream-50">
+  <div class="max-w-screen-2xl mx-auto px-6 lg:px-12 text-center">
+    <div class="divider-leaf reveal">
+      <span class="ornament text-lg">~</span>
+    </div>
+    <h2 class="section-title mt-6 reveal reveal-delay-1 max-w-3xl mx-auto">
+      Французская выпечка, рождённая из терпения и масла
+    </h2>
+    <p class="reveal reveal-delay-2 mt-6 text-ink-500 max-w-2xl mx-auto">
+      Каждое утро мы замешиваем тесто вручную, расстаиваем его 36 часов и выпекаем
+      в небольших партиях, чтобы вы получили десерт безупречной свежести.
+    </p>
+  </div>
+</section>
+
+{# ---------- POPULAR PRODUCTS ---------- #}
+{% if featured_products %}
+<section class="section bg-cream-50">
+  <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
+
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+      <div>
+        <div class="eyebrow mb-3 reveal">Signature</div>
+        <h2 class="section-title reveal reveal-delay-1">Любимые десерты</h2>
+      </div>
+      <a href="{% url 'core:catalog' %}" class="btn btn-outline reveal reveal-delay-2 self-start md:self-auto">
+        Весь каталог <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {% for product in featured_products %}
+      <article class="product-card reveal reveal-delay-{{ forloop.counter0|add:1 }}">
+        <div class="img-wrap">
+          {% if product.display_image %}
+            <img src="{{ product.display_image }}" alt="{{ product.name }}" loading="lazy">
+          {% endif %}
+          {% if product.is_featured %}<span class="badge">Signature</span>{% endif %}
+        </div>
+        <div class="body">
+          <div class="cat">{{ product.category.name }}</div>
+          <h3 class="title">{{ product.name }}</h3>
+          {% if product.description %}
+            <p class="desc line-clamp-2">{{ product.description|truncatewords:14 }}</p>
+          {% endif %}
+          <div class="price-row">
+            <span class="price">{{ product.price|floatformat:0|intcomma }} {{ product.currency }}</span>
+            {% if product.weight %}<span class="weight">{{ product.weight }}</span>{% endif %}
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+{% endif %}
+
+{# ---------- CATEGORIES ---------- #}
+{% if categories %}
+<section class="section bg-cream-100">
+  <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
+
+    <div class="text-center mb-14">
+      <div class="eyebrow mb-3 reveal">Collections</div>
+      <h2 class="section-title reveal reveal-delay-1">Наши категории</h2>
+      <p class="reveal reveal-delay-2 mt-5 text-ink-500 max-w-xl mx-auto">
+        От классических круассанов до муссовых тортов — всё, что делает день особенным.
+      </p>
+    </div>
+
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {% for cat in categories %}
+      <a href="{{ cat.get_absolute_url }}" class="cat-card reveal reveal-delay-{{ forloop.counter0|add:1 }}">
+        {% if cat.display_image %}
+          <div class="bg" style="background-image: url('{{ cat.display_image }}');"></div>
+        {% endif %}
+        <div class="content">
+          <span class="label">{{ cat.name }}</span>
+          <span class="more">Открыть <span>→</span></span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+{% endif %}
+
+{# ---------- ABOUT TEASER ---------- #}
+<section class="section bg-cream-50">
+  <div class="max-w-screen-2xl mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-14 items-center">
+    <div class="reveal">
+      <div class="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl">
+        <img src="{{ site_settings.about_image_url|default:'https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=1400&q=80' }}"
+             alt="{{ site_settings.about_title }}"
+             class="w-full h-full object-cover" loading="lazy">
+      </div>
+      <div class="absolute -mt-10 ml-6 hidden lg:block">
+        <div class="bg-cream-50 px-7 py-5 rounded-2xl shadow-lg flex items-baseline gap-3">
+          <span class="font-serif text-3xl text-gold-500">04+</span>
+          <span class="text-xs uppercase tracking-[.3em] text-ink-500">года<br>искусства</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal reveal-delay-2">
+      <div class="eyebrow mb-3">Notre maison</div>
+      <h2 class="section-title mb-6">{{ site_settings.about_title }}</h2>
+      <p class="text-ink-500 leading-relaxed mb-8">{{ site_settings.about_text }}</p>
+
+      <div class="grid grid-cols-3 gap-3 mb-10 border-y border-cream-200 py-6">
+        <div class="feat py-0">
+          <span class="num">36h</span>
+          <span class="label">Расстойка теста</span>
+        </div>
+        <div class="feat py-0">
+          <span class="num">100%</span>
+          <span class="label">Французское масло</span>
+        </div>
+        <div class="feat py-0">
+          <span class="num">24°</span>
+          <span class="label">Точность температур</span>
+        </div>
+      </div>
+
+      <a href="{% url 'core:about' %}" class="btn btn-primary">
+        Узнать больше <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+{# ---------- INSTAGRAM-STYLE GALLERY ---------- #}
+{% if gallery_items %}
+<section class="section bg-cream-100">
+  <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
+
+    <div class="text-center mb-12">
+      <div class="eyebrow mb-3 reveal">@kruassanov.tm</div>
+      <h2 class="section-title reveal reveal-delay-1">Из нашей мастерской</h2>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+      {% for item in gallery_items %}
+      <a href="{% if site_settings.instagram_url %}{{ site_settings.instagram_url }}{% else %}{% url 'core:gallery' %}{% endif %}"
+         target="_blank" rel="noopener"
+         class="gallery-item aspect-square reveal reveal-delay-{{ forloop.counter|divisibleby:6|yesno:'5,4' }}">
+        {% if item.display_image %}
+          <img src="{{ item.display_image }}" alt="{{ item.title|default:'photo' }}" loading="lazy">
+        {% endif %}
+        <div class="overlay">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <rect x="3" y="3" width="18" height="18" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+          </svg>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-12">
+      <a href="{% url 'core:gallery' %}" class="btn btn-outline reveal">
+        Полная галерея <span class="arrow">→</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+{% endif %}
+
+{# ---------- CTA ---------- #}
+<section class="relative overflow-hidden">
+  <div class="absolute inset-0 bg-cover bg-center"
+       style="background-image: url('https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=2000&q=80');"></div>
+  <div class="absolute inset-0 bg-ink-900/70"></div>
+  <div class="relative max-w-3xl mx-auto px-6 py-28 text-center text-white">
+    <div class="eyebrow text-gold-400 mb-4 reveal">À bientôt</div>
+    <h2 class="section-title text-white mb-6 reveal reveal-delay-1">
+      Приходите за вашим утренним круассаном
+    </h2>
+    <p class="text-white/80 max-w-xl mx-auto mb-10 reveal reveal-delay-2">
+      Свежая выпечка каждое утро. Кофе и сладости в уютной атмосфере французской кондитерской.
+    </p>
+    <div class="flex flex-wrap justify-center gap-4 reveal reveal-delay-3">
+      <a href="{% url 'core:contacts' %}" class="btn btn-light">Где нас найти <span class="arrow">→</span></a>
+      {% if site_settings.phone %}
+        <a href="tel:{{ site_settings.phone }}" class="btn btn-outline" style="border-color:rgba(255,255,255,.6); color:#fff;">
+          {{ site_settings.phone }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

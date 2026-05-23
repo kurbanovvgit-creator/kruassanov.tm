@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}О компании — {{ site_settings.company_name }}{% endblock %}
+
+{% block content %}
+
+{# ---------- HERO ---------- #}
+<section class="relative h-[70vh] min-h-[480px] flex items-center text-white overflow-hidden">
+  <div class="absolute inset-0 bg-cover bg-center hero-bg"
+       style="background-image: url('https://images.unsplash.com/photo-1568376794508-ae52c6ab3929?w=2000&q=80');"></div>
+  <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60"></div>
+  <div class="relative max-w-screen-2xl mx-auto px-6 lg:px-12 pt-24">
+    <div class="hero-content max-w-2xl">
+      <div class="hero-eyebrow eyebrow mb-5">Notre histoire</div>
+      <h1 class="hero-title">О компании</h1>
+    </div>
+  </div>
+</section>
+
+{# ---------- INTRO ---------- #}
+<section class="section bg-cream-50">
+  <div class="max-w-screen-2xl mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-16 items-center">
+    <div class="reveal">
+      <div class="eyebrow mb-3">Maison Kruassanov</div>
+      <h2 class="section-title mb-6">{{ site_settings.about_title }}</h2>
+      <p class="text-ink-500 leading-relaxed mb-5">{{ site_settings.about_text }}</p>
+      <p class="text-ink-500 leading-relaxed">
+        Мы вдохновлены парижскими кондитерскими и переносим эту атмосферу в каждую
+        деталь — от подачи до упаковки. Здесь нет случайных ингредиентов: только
+        французское масло, бельгийский шоколад, мадагаскарская ваниль и сицилийская
+        фисташка.
+      </p>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <div class="grid grid-cols-2 gap-4">
+        <div class="aspect-[3/4] rounded-2xl overflow-hidden shadow-lg">
+          <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=900&q=80" class="w-full h-full object-cover" alt="">
+        </div>
+        <div class="aspect-[3/4] rounded-2xl overflow-hidden shadow-lg mt-10">
+          <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=900&q=80" class="w-full h-full object-cover" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ---------- VALUES ---------- #}
+<section class="section bg-cream-100">
+  <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
+    <div class="text-center mb-16">
+      <div class="eyebrow mb-3 reveal">Nos valeurs</div>
+      <h2 class="section-title reveal reveal-delay-1">Наши ценности</h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-10">
+      <div class="reveal text-center">
+        <div class="w-16 h-16 rounded-full bg-cream-50 border border-gold-400 flex items-center justify-center mx-auto mb-5">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b8956a" stroke-width="1.5"><path d="M12 2C9 6 6 9 6 13a6 6 0 0012 0c0-4-3-7-6-11z"/></svg>
+        </div>
+        <h3 class="font-serif text-2xl mb-3">Терпение</h3>
+        <p class="text-ink-500 leading-relaxed">36 часов расстойки теста — наш секрет идеальной слоистости и аромата.</p>
+      </div>
+      <div class="reveal reveal-delay-2 text-center">
+        <div class="w-16 h-16 rounded-full bg-cream-50 border border-gold-400 flex items-center justify-center mx-auto mb-5">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b8956a" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        </div>
+        <h3 class="font-serif text-2xl mb-3">Качество</h3>
+        <p class="text-ink-500 leading-relaxed">Только премиальные ингредиенты от проверенных европейских поставщиков.</p>
+      </div>
+      <div class="reveal reveal-delay-3 text-center">
+        <div class="w-16 h-16 rounded-full bg-cream-50 border border-gold-400 flex items-center justify-center mx-auto mb-5">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#b8956a" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <h3 class="font-serif text-2xl mb-3">Любовь к делу</h3>
+        <p class="text-ink-500 leading-relaxed">Каждое утро мы возвращаемся в мастерскую с одной целью — радовать вас.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ---------- STATS ---------- #}
+<section class="py-20 bg-ink-900 text-white">
+  <div class="max-w-screen-2xl mx-auto px-6 lg:px-12 grid grid-cols-2 md:grid-cols-4 gap-8">
+    <div class="feat reveal">
+      <span class="num text-gold-400">04+</span>
+      <span class="label text-white/60">года искусства</span>
+    </div>
+    <div class="feat reveal reveal-delay-1">
+      <span class="num text-gold-400">38</span>
+      <span class="label text-white/60">видов десертов</span>
+    </div>
+    <div class="feat reveal reveal-delay-2">
+      <span class="num text-gold-400">12k</span>
+      <span class="label text-white/60">довольных гостей</span>
+    </div>
+    <div class="feat reveal reveal-delay-3">
+      <span class="num text-gold-400">100%</span>
+      <span class="label text-white/60">натуральные продукты</span>
+    </div>
+  </div>
+</section>
+
+{# ---------- CTA ---------- #}
+<section class="section bg-cream-50 text-center">
+  <div class="max-w-2xl mx-auto px-6">
+    <div class="ornament text-2xl mb-4 reveal">~</div>
+    <h2 class="section-title mb-6 reveal reveal-delay-1">Откройте для себя коллекцию</h2>
+    <p class="text-ink-500 mb-8 reveal reveal-delay-2">
+      Загляните в каталог и выберите свой любимый десерт.
+    </p>
+    <a href="{% url 'core:catalog' %}" class="btn btn-primary reveal reveal-delay-3">
+      Смотреть меню <span class="arrow">→</span>
+    </a>
+  </div>
+</section>
+
+{% endblock %}

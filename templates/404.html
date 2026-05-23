@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Страница не найдена — {{ site_settings.company_name }}{% endblock %}
+
+{% block content %}
+<section class="page-404">
+  <div class="text-center max-w-xl">
+    <div class="font-serif italic text-gold-500 mb-4">404</div>
+    <h1 class="font-serif text-5xl md:text-6xl text-ink-900 mb-5">Page introuvable</h1>
+    <p class="text-ink-500 mb-8">
+      К сожалению, такой страницы у нас нет. Но у нас точно есть свежие круассаны.
+    </p>
+    <a href="{% url 'core:home' %}" class="btn btn-primary">
+      На главную <span class="arrow">→</span>
+    </a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Галерея — {{ site_settings.company_name }}{% endblock %}
+
+{% block content %}
+
+<section class="pt-40 pb-16 bg-cream-100 text-center">
+  <div class="max-w-screen-2xl mx-auto px-6">
+    <div class="eyebrow mb-4 reveal">Album</div>
+    <h1 class="section-title reveal reveal-delay-1">Галерея</h1>
+    <p class="text-ink-500 max-w-xl mx-auto mt-5 reveal reveal-delay-2">
+      Лучшие кадры из нашей мастерской, витрины и со специальных событий.
+    </p>
+  </div>
+</section>
+
+<section class="section bg-cream-50">
+  <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
+    {% if items %}
+      <div class="columns-2 md:columns-3 lg:columns-4 gap-4 [column-fill:_balance]">
+        {% for item in items %}
+          <div class="gallery-item mb-4 break-inside-avoid reveal reveal-delay-{{ forloop.counter|divisibleby:5|yesno:'4,2' }}">
+            {% if item.display_image %}
+              <img src="{{ item.display_image }}" alt="{{ item.title|default:'photo' }}" loading="lazy">
+            {% endif %}
+            {% if item.title %}
+              <div class="overlay">
+                <span class="text-sm tracking-[.2em] uppercase">{{ item.title }}</span>
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="text-center py-24">
+        <div class="ornament text-3xl mb-4">~</div>
+        <h2 class="font-serif text-3xl text-ink-900 mb-3">Галерея пополняется</h2>
+        <p class="text-ink-500">Скоро здесь появятся новые фотографии.</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% if site_settings.instagram_url %}
+<section class="py-20 bg-cream-100 text-center">
+  <div class="max-w-xl mx-auto px-6">
+    <div class="eyebrow mb-3 reveal">Follow</div>
+    <h2 class="font-serif text-3xl text-ink-900 mb-5 reveal reveal-delay-1">Больше в Instagram</h2>
+    <p class="text-ink-500 mb-8 reveal reveal-delay-2">
+      Подписывайтесь — мы делимся каждым новым десертом и закулисьем кондитерской.
+    </p>
+    <a href="{{ site_settings.instagram_url }}" target="_blank" rel="noopener" class="btn btn-primary reveal reveal-delay-3">
+      @kruassanov.tm <span class="arrow">→</span>
+    </a>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}
