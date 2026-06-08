@@ -12,53 +12,10 @@
 
   <title>{% block title %}{{ site_settings.company_name }} — {{ site_settings.tagline }}{% endblock %}</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            serif: ['"Playfair Display"', 'serif'],
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-          },
-          colors: {
-            cream: {
-              50:  '#fbf8f3',
-              100: '#f7f1e6',
-              200: '#efe5d0',
-              300: '#e3d3b3',
-            },
-            rose: {
-              100: '#f5e1de',
-              200: '#ecc6c2',
-              400: '#d49a93',
-            },
-            gold: {
-              400: '#c9a96e',
-              500: '#b8956a',
-              600: '#9c7f55',
-            },
-            ink: {
-              300: '#b3a796',
-              500: '#6b5d4f',
-              700: '#4a3c2e',
-              900: '#2c2418',
-            },
-          },
-          maxWidth: {
-            'screen-2xl': '1440px',
-          },
-        }
-      }
-    }
-  </script>
-
+  <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
+  <link rel="stylesheet" href="{% static 'css/utilities.css' %}">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🥐%3C/text%3E%3C/svg%3E">
+  {% include 'components/favicons.html' %}
 
   {% block extra_head %}{% endblock %}
 </head>

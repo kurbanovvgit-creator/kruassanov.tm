@@ -2,11 +2,12 @@
 {% load humanize %}
 
 {% block title %}Каталог{% if selected_category %} · {{ selected_category.name }}{% endif %} — {{ site_settings.company_name }}{% endblock %}
+{% block body_class %}page-catalog{% endblock %}
 
 {% block content %}
 
 {# ---------- HEADER ---------- #}
-<section class="pt-40 pb-16 bg-cream-100">
+<section class="catalog-hero pt-40 pb-16 bg-cream-100">
   <div class="max-w-screen-2xl mx-auto px-6 lg:px-12 text-center">
     <div class="eyebrow mb-4 reveal">La carte</div>
     <h1 class="section-title reveal reveal-delay-1">
@@ -23,9 +24,9 @@
 </section>
 
 {# ---------- FILTERS ---------- #}
-<section class="py-10 bg-cream-50 sticky top-0 z-30" style="top: 70px;">
-  <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
-    <div class="flex flex-wrap items-center justify-center gap-3">
+<section class="catalog-filters py-10 bg-cream-50">
+  <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-12">
+    <div class="filter-scroll">
       <a href="{% url 'core:catalog' %}"
          class="filter-chip {% if not selected_category %}active{% endif %}">
         Всё меню
@@ -41,11 +42,11 @@
 </section>
 
 {# ---------- PRODUCTS GRID ---------- #}
-<section class="section bg-cream-50 pt-10">
+<section class="catalog-products section bg-cream-50 pt-10">
   <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
 
     {% if products %}
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div class="product-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {% for product in products %}
           <article class="product-card reveal reveal-delay-{{ forloop.counter0|add:1 }}">
             <div class="img-wrap">
@@ -58,7 +59,7 @@
               <div class="cat">{{ product.category.name }}</div>
               <h3 class="title">{{ product.name }}</h3>
               {% if product.description %}
-                <p class="desc">{{ product.description }}</p>
+                <p class="desc line-clamp-2">{{ product.description }}</p>
               {% endif %}
               <div class="price-row">
                 <span class="price">{{ product.price|floatformat:0|intcomma }} {{ product.currency }}</span>

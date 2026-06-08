@@ -1,16 +1,15 @@
 {% extends 'base.html' %}
-{% load humanize %}
+{% load humanize static %}
 
 {% block title %}{{ site_settings.company_name }} — {{ site_settings.tagline }}{% endblock %}
-{% block body_class %}home{% endblock %}
-{% block nav_class %}nav-on-dark{% endblock %}
+{% block body_class %}home nav-dark{% endblock %}
 
 {% block content %}
 
 {# ---------- HERO ---------- #}
 <section class="hero">
   <div class="hero-bg"
-       style="background-image: url('{% if site_settings.hero_image %}{{ site_settings.hero_image.url }}{% else %}{{ site_settings.hero_image_url }}{% endif %}');">
+       style="background-image: url('{{ site_settings.hero_display_image }}');">
   </div>
 
   <div class="hero-content max-w-screen-2xl mx-auto px-6 lg:px-12 w-full">
@@ -63,7 +62,7 @@
       </a>
     </div>
 
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="product-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {% for product in featured_products %}
       <article class="product-card reveal reveal-delay-{{ forloop.counter0|add:1 }}">
         <div class="img-wrap">
@@ -104,7 +103,7 @@
       </p>
     </div>
 
-    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="cat-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {% for cat in categories %}
       <a href="{{ cat.get_absolute_url }}" class="cat-card reveal reveal-delay-{{ forloop.counter0|add:1 }}">
         {% if cat.display_image %}
@@ -127,7 +126,7 @@
   <div class="max-w-screen-2xl mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-14 items-center">
     <div class="reveal">
       <div class="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl">
-        <img src="{{ site_settings.about_image_url|default:'https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=1400&q=80' }}"
+        <img src="{{ site_settings.about_display_image }}"
              alt="{{ site_settings.about_title }}"
              class="w-full h-full object-cover" loading="lazy">
       </div>
@@ -166,49 +165,10 @@
   </div>
 </section>
 
-{# ---------- INSTAGRAM-STYLE GALLERY ---------- #}
-{% if gallery_items %}
-<section class="section bg-cream-100">
-  <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
-
-    <div class="text-center mb-12">
-      <div class="eyebrow mb-3 reveal">@kruassanov.tm</div>
-      <h2 class="section-title reveal reveal-delay-1">Из нашей мастерской</h2>
-    </div>
-
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-      {% for item in gallery_items %}
-      <a href="{% if site_settings.instagram_url %}{{ site_settings.instagram_url }}{% else %}{% url 'core:gallery' %}{% endif %}"
-         target="_blank" rel="noopener"
-         class="gallery-item aspect-square reveal reveal-delay-{{ forloop.counter|divisibleby:6|yesno:'5,4' }}">
-        {% if item.display_image %}
-          <img src="{{ item.display_image }}" alt="{{ item.title|default:'photo' }}" loading="lazy">
-        {% endif %}
-        <div class="overlay">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-            <rect x="3" y="3" width="18" height="18" rx="5"/>
-            <circle cx="12" cy="12" r="4"/>
-            <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
-          </svg>
-        </div>
-      </a>
-      {% endfor %}
-    </div>
-
-    <div class="text-center mt-12">
-      <a href="{% url 'core:gallery' %}" class="btn btn-outline reveal">
-        Полная галерея <span class="arrow">→</span>
-      </a>
-    </div>
-
-  </div>
-</section>
-{% endif %}
-
 {# ---------- CTA ---------- #}
 <section class="relative overflow-hidden">
   <div class="absolute inset-0 bg-cover bg-center"
-       style="background-image: url('https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=2000&q=80');"></div>
+       style="background-image: url('{% static 'images/1486427944299-d1955d23e34d.jpg' %}');"></div>
   <div class="absolute inset-0 bg-ink-900/70"></div>
   <div class="relative max-w-3xl mx-auto px-6 py-28 text-center text-white">
     <div class="eyebrow text-gold-400 mb-4 reveal">À bientôt</div>

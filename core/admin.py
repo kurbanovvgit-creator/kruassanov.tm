@@ -9,8 +9,11 @@ class _ImagePreviewMixin:
     url_field_name = 'image_url'
 
     def image_preview(self, obj):
-        src = getattr(obj, self.image_field_name, None)
-        url = src.url if src else getattr(obj, self.url_field_name, '')
+        if hasattr(obj, 'display_image'):
+            url = obj.display_image
+        else:
+            src = getattr(obj, self.image_field_name, None)
+            url = src.url if src else getattr(obj, self.url_field_name, '')
         if not url:
             return '—'
         return format_html(

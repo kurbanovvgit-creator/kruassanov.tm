@@ -15,11 +15,9 @@ def home(request):
             Product.objects.filter(is_active=True).select_related('category')[:8]
         )
     categories = Category.objects.filter(is_active=True)[:6]
-    gallery_items = Gallery.objects.filter(is_active=True)[:6]
     return render(request, 'pages/home.html', {
         'featured_products': featured_products,
         'categories': categories,
-        'gallery_items': gallery_items,
     })
 
 

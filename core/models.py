@@ -2,6 +2,8 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 
+from .offline_assets import resolve_image_source
+
 
 def _ru_slug(value: str) -> str:
     """Slug from Cyrillic-safe name (falls back to id-based slug elsewhere)."""
@@ -59,9 +61,10 @@ class SiteSettings(models.Model):
     hero_image = models.ImageField(
         'Hero — фоновое изображение', upload_to='settings/', blank=True, null=True
     )
-    hero_image_url = models.URLField(
-        'Hero — URL изображения (если не загружено)', blank=True,
-        default='https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=2000&q=80'
+    hero_image_url = models.CharField(
+        'Hero — путь к изображению (если не загружено)', max_length=255,
+        blank=True, default='images/1555507036-ab1f4038808a.jpg',
+        help_text='Локальный путь в static/, например images/hero.jpg',
     )
 
     about_title = models.CharField(
@@ -76,9 +79,10 @@ class SiteSettings(models.Model):
             'Свежие ингредиенты, ручная работа и безупречный вкус.'
         )
     )
-    about_image_url = models.URLField(
-        'О компании — изображение URL', blank=True,
-        default='https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=1600&q=80'
+    about_image_url = models.CharField(
+        'О компании — путь к изображению', max_length=255, blank=True,
+        default='images/1517433670267-08bbd4be890f.jpg',
+        help_text='Локальный путь в static/, например images/about.jpg',
     )
 
     footer_text = models.CharField(
@@ -105,6 +109,17 @@ class SiteSettings(models.Model):
         obj, _ = cls.objects.get_or_create(pk=1)
         return obj
 
+    @property
+    def hero_display_image(self):
+        return resolve_image_source(
+            upload_field=self.hero_image,
+            path_or_url=self.hero_image_url,
+        )
+
+    @property
+    def about_display_image(self):
+        return resolve_image_source(path_or_url=self.about_image_url)
+
 
 class Category(TimeStampedModel):
     name = models.CharField('Название', max_length=120, unique=True)
@@ -113,8 +128,10 @@ class Category(TimeStampedModel):
     image = models.ImageField(
         'Изображение', upload_to='categories/', blank=True, null=True
     )
-    image_url = models.URLField(
-        'URL изображения (используется если файл не загружен)', blank=True
+    image_url = models.CharField(
+        'Путь к изображению (если файл не загружен)', max_length=255,
+        blank=True,
+        help_text='Локальный путь в static/, например images/category.jpg',
     )
     order = models.PositiveIntegerField('Порядок', default=0)
     is_active = models.BooleanField('Активна', default=True)
@@ -137,9 +154,10 @@ class Category(TimeStampedModel):
 
     @property
     def display_image(self):
-        if self.image:
-            return self.image.url
-        return self.image_url
+        return resolve_image_source(
+            upload_field=self.image,
+            path_or_url=self.image_url,
+        )
 
 
 class Product(TimeStampedModel):
@@ -161,8 +179,10 @@ class Product(TimeStampedModel):
     image = models.ImageField(
         'Изображение', upload_to='products/', blank=True, null=True
     )
-    image_url = models.URLField(
-        'URL изображения (используется если файл не загружен)', blank=True
+    image_url = models.CharField(
+        'Путь к изображению (если файл не загружен)', max_length=255,
+        blank=True,
+        help_text='Локальный путь в static/, например images/product.jpg',
     )
     is_featured = models.BooleanField('Популярный', default=False)
     is_active = models.BooleanField('Активен', default=True)
@@ -189,9 +209,10 @@ class Product(TimeStampedModel):
 
     @property
     def display_image(self):
-        if self.image:
-            return self.image.url
-        return self.image_url
+        return resolve_image_source(
+            upload_field=self.image,
+            path_or_url=self.image_url,
+        )
 
 
 class Gallery(TimeStampedModel):
@@ -199,8 +220,10 @@ class Gallery(TimeStampedModel):
     image = models.ImageField(
         'Изображение', upload_to='gallery/', blank=True, null=True
     )
-    image_url = models.URLField(
-        'URL изображения (используется если файл не загружен)', blank=True
+    image_url = models.CharField(
+        'Путь к изображению (если файл не загружен)', max_length=255,
+        blank=True,
+        help_text='Локальный путь в static/, например images/gallery.jpg',
     )
     order = models.PositiveIntegerField('Порядок', default=0)
     is_active = models.BooleanField('Активно', default=True)
@@ -215,6 +238,7 @@ class Gallery(TimeStampedModel):
 
     @property
     def display_image(self):
-        if self.image:
-            return self.image.url
-        return self.image_url
+        return resolve_image_source(
+            upload_field=self.image,
+            path_or_url=self.image_url,
+        )

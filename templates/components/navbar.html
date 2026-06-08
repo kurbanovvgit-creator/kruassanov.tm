@@ -1,33 +1,36 @@
 {% load static %}
-<header class="nav {% block nav_class %}{% endblock %}">
-  <div class="max-w-screen-2xl mx-auto px-6 lg:px-12 flex items-center justify-between">
-    <a href="{% url 'core:home' %}" class="flex items-center gap-3">
+<header class="nav">
+  <div class="nav__inner max-w-screen-2xl mx-auto px-5 sm:px-6 lg:px-12">
+    <a href="{% url 'core:home' %}" class="nav__brand{% if site_settings.logo %} nav__brand--logo-only{% endif %}">
       {% if site_settings.logo %}
-        <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.company_name }}" class="h-10 w-auto">
+        <span class="nav__brand-logo">
+          <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.company_name }}">
+        </span>
       {% else %}
-        <div class="hidden sm:block w-9 h-9 rounded-full border border-gold-500 flex items-center justify-center text-gold-500 font-serif italic">K</div>
+        <span class="nav__brand-mark" aria-hidden="true">K</span>
       {% endif %}
-      <div class="leading-none">
-        <div class="brand-name">{{ site_settings.company_name }}</div>
+      <span class="nav__brand-copy">
+        <span class="nav__brand-name">{{ site_settings.company_name }}</span>
         {% if site_settings.tagline %}
-          <div class="brand-tagline mt-1">{{ site_settings.tagline }}</div>
+          <span class="nav__brand-tag">{{ site_settings.tagline }}</span>
         {% endif %}
-      </div>
+      </span>
     </a>
 
-    <nav class="hidden lg:flex items-center gap-10">
+    <nav class="nav__desktop" aria-label="Основное меню">
       {% for link in nav_links %}
         {% url link.url_name as link_url %}
         <a href="{{ link_url }}"
-           class="nav-link {% if request.path == link_url %}active{% endif %}">
+           class="nav__link {% if request.path == link_url %}is-active{% endif %}">
           {{ link.label }}
         </a>
       {% endfor %}
     </nav>
 
-    <div class="hidden lg:flex items-center gap-5">
+    <div class="nav__actions">
       {% if site_settings.instagram_url %}
-        <a href="{{ site_settings.instagram_url }}" target="_blank" rel="noopener" class="nav-link" aria-label="Instagram">
+        <a href="{{ site_settings.instagram_url }}" target="_blank" rel="noopener"
+           class="nav__icon" aria-label="Instagram">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="3" width="18" height="18" rx="5"/>
             <circle cx="12" cy="12" r="4"/>
@@ -35,21 +38,56 @@
           </svg>
         </a>
       {% endif %}
-      <a href="{% url 'core:catalog' %}" class="btn btn-outline" style="padding:.65rem 1.3rem; font-size:.7rem;">Меню</a>
+      <a href="{% url 'core:catalog' %}" class="nav__cta btn btn-outline">Меню</a>
     </div>
 
-    <button class="burger lg:hidden" aria-label="Меню" type="button">
-      <span></span><span></span><span></span>
+    <button class="nav__toggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav-drawer">
+      <svg class="nav__toggle-icon nav__toggle-icon--menu" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path d="M5 7h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M5 17h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <svg class="nav__toggle-icon nav__toggle-icon--close" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path d="M7 7l10 10M17 7L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
     </button>
   </div>
 </header>
 
-<div class="mobile-menu lg:hidden">
-  {% for link in nav_links %}
-    {% url link.url_name as link_url %}
-    <a href="{{ link_url }}">{{ link.label }}</a>
-  {% endfor %}
-  {% if site_settings.instagram_url %}
-    <a href="{{ site_settings.instagram_url }}" target="_blank" rel="noopener" class="text-base tracking-[.3em] uppercase text-gold-500">Instagram</a>
-  {% endif %}
+<div class="nav__drawer lg:hidden" id="nav-drawer" aria-hidden="true">
+  <button class="nav__drawer-backdrop" type="button" aria-label="Закрыть меню" tabindex="-1"></button>
+  <div class="nav__drawer-panel">
+    <div class="nav__drawer-head">
+      <div class="nav__drawer-brand">
+        <span class="nav__drawer-name">{{ site_settings.company_name }}</span>
+        {% if site_settings.tagline %}
+          <span class="nav__drawer-tag">{{ site_settings.tagline }}</span>
+        {% endif %}
+      </div>
+      <button class="nav__drawer-close" type="button" aria-label="Закрыть меню">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <path d="M6 6l12 12M18 6L6 18"/>
+        </svg>
+      </button>
+    </div>
+
+    <nav class="nav__drawer-links" aria-label="Мобильное меню">
+      {% for link in nav_links %}
+        {% url link.url_name as link_url %}
+        <a href="{{ link_url }}" class="nav__drawer-link {% if request.path == link_url %}is-active{% endif %}">
+          <span>{{ link.label }}</span>
+          <span class="nav__drawer-arrow" aria-hidden="true">→</span>
+        </a>
+      {% endfor %}
+    </nav>
+
+    <div class="nav__drawer-footer">
+      <a href="{% url 'core:catalog' %}" class="btn btn-primary w-full justify-center">Смотреть меню</a>
+      {% if site_settings.instagram_url %}
+        <a href="{{ site_settings.instagram_url }}" target="_blank" rel="noopener" class="nav__drawer-social">
+          Instagram
+        </a>
+      {% endif %}
+    </div>
+  </div>
 </div>

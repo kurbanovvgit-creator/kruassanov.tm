@@ -7,9 +7,10 @@
 ## Технологии
 
 - **Backend:** Django 5
-- **Frontend:** Django Templates + TailwindCSS (CDN) + ванильный JavaScript
+- **Frontend:** Django Templates + локальный CSS (`utilities.css`) + ванильный JavaScript
 - **База данных:** SQLite
-- **Шрифты:** Playfair Display + Inter (Google Fonts)
+- **Шрифты:** локально (Segoe UI / Georgia) или свои `.woff2` в `static/fonts/`
+- **Без CDN:** стили и шрифты отдаются с вашего сервера — работает офлайн
 - **Статика в продакшене:** WhiteNoise
 
 ## Структура
@@ -40,7 +41,10 @@ kruassanov/
 │       ├── gallery.html
 │       └── contacts.html
 ├── static/
+│   ├── css/fonts.css        # шрифты (системные / локальные woff2)
+│   ├── css/utilities.css    # утилиты вместо Tailwind CDN
 │   ├── css/style.css        # luxury theme
+│   ├── fonts/               # опционально: .woff2
 │   └── js/main.js           # анимации, sticky nav, mobile menu
 └── media/                   # пользовательские загрузки
 ```
@@ -129,8 +133,8 @@ DJANGO_ALLOWED_HOSTS=127.0.0.1,localhost
 2. Сгенерировать новый `DJANGO_SECRET_KEY`.
 3. `python manage.py collectstatic --noinput` (WhiteNoise отдаст статику).
 4. Настроить раздачу `media/` через nginx / S3.
-5. Для production-сборки Tailwind перейти с CDN на [standalone CLI](https://tailwindcss.com/blog/standalone-cli)
-   и собрать `static/css/tailwind.css`.
+5. При желании добавить файлы шрифтов в `static/fonts/` и раскомментировать
+   `@font-face` в `static/css/fonts.css`.
 
 ## Лицензия
 

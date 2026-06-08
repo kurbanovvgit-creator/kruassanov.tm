@@ -26,6 +26,16 @@
         </p>
       </div>
 
+      <div class="map-embed reveal">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3146.888038700451!2d58.39553947625583!3d37.93304597194592!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f6ffd2417100e93%3A0xd7b58bd3d3692db0!2z0JrRgNGD0LDRgdGB0LDQvdC-0LI!5e0!3m2!1sru!2sse!4v1780931232788!5m2!1sru!2sse"
+          title="Карта — {{ site_settings.address|default:'Ашхабад' }}"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen>
+        </iframe>
+      </div>
+
       <div class="grid sm:grid-cols-2 gap-5">
         {% if site_settings.phone %}
         <a href="tel:{{ site_settings.phone }}" class="bg-white rounded-2xl p-7 shadow-sm hover:shadow-lg transition block group">
@@ -88,19 +98,6 @@
       </div>
     </div>
 
-  </div>
-</section>
-
-{# ---------- MAP ---------- #}
-<section class="py-0">
-  <div class="aspect-[16/7] w-full bg-cream-100 overflow-hidden">
-    <iframe
-      src="https://www.openstreetmap.org/export/embed.html?bbox=58.30,37.92,58.42,37.96&layer=mapnik"
-      class="w-full h-full border-0"
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade"
-      title="Карта">
-    </iframe>
   </div>
 </section>
 

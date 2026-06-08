@@ -5,33 +5,66 @@
   // ----- sticky nav -----
   const nav = document.querySelector('.nav');
   if (nav) {
+    const syncNavHeight = () => {
+      document.documentElement.style.setProperty(
+        '--nav-height',
+        `${nav.offsetHeight}px`
+      );
+    };
+
     const onScroll = () => {
       if (window.scrollY > 30) {
         nav.classList.add('scrolled');
       } else {
         nav.classList.remove('scrolled');
       }
+      syncNavHeight();
     };
+
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', syncNavHeight);
     onScroll();
+    syncNavHeight();
   }
 
-  // ----- mobile menu -----
-  const burger = document.querySelector('.burger');
-  const mobileMenu = document.querySelector('.mobile-menu');
-  if (burger && mobileMenu) {
-    const toggle = () => {
-      burger.classList.toggle('open');
-      mobileMenu.classList.toggle('open');
-      document.body.style.overflow =
-        mobileMenu.classList.contains('open') ? 'hidden' : '';
-    };
-    burger.addEventListener('click', toggle);
-    mobileMenu.querySelectorAll('a').forEach((a) =>
-      a.addEventListener('click', () => {
-        if (mobileMenu.classList.contains('open')) toggle();
-      })
-    );
+  // ----- mobile drawer -----
+  const toggle = document.querySelector('.nav__toggle');
+  const drawer = document.querySelector('.nav__drawer');
+  const backdrop = document.querySelector('.nav__drawer-backdrop');
+  const closeBtn = document.querySelector('.nav__drawer-close');
+
+  const setDrawerOpen = (open) => {
+    if (!toggle || !drawer) return;
+    toggle.classList.toggle('is-open', open);
+    drawer.classList.toggle('is-open', open);
+    document.body.classList.toggle('nav-open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+    toggle.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+  };
+
+  if (toggle && drawer) {
+    toggle.addEventListener('click', () => {
+      setDrawerOpen(!drawer.classList.contains('is-open'));
+    });
+
+    if (backdrop) {
+      backdrop.addEventListener('click', () => setDrawerOpen(false));
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => setDrawerOpen(false));
+    }
+
+    drawer.querySelectorAll('.nav__drawer-link, .nav__drawer-footer a').forEach((link) => {
+      link.addEventListener('click', () => setDrawerOpen(false));
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && drawer.classList.contains('is-open')) {
+        setDrawerOpen(false);
+      }
+    });
   }
 
   // ----- hero loaded class (kick scale animation) -----
